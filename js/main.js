@@ -4,7 +4,7 @@ function getRandomNumer(min, max) {
     ? Math.round(Math.random() * (max - min) + min)
     : console.log("wrong number range");
 }
-console.log(getFractionNumer(0, 3));
+getFractionNumer(0, 3);
 
 //Random fraction digit helper
 function getFractionNumer(min, max, fractionLength) {
@@ -13,4 +13,4 @@ function getFractionNumer(min, max, fractionLength) {
     : console.log("wrong number range");
 }
 
-console.log(getFractionNumer(1.1, 1.2, 2));
+getFractionNumer(1.1, 1.2, 2);

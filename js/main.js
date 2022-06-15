@@ -10,8 +10,7 @@ const TITLES = [
   'Townhouse on the lake',
 ];
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
-const CHECKIN = ['12:00', '13:00', '14:00'];
-const CHECKOUT = ['12:00', '13:00', '14:00'];
+const TIMES = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const DESCRIPTIONS = [
   'Very nice apartments',
@@ -25,6 +24,11 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
+const LOCATION_LAT_MIN = 35.65;
+const LOCATION_LAT_MAX = 35.7;
+const LOCATION_LNG_MIN = 139.7;
+const LOCATION_LNG_MAX = 139.8;
+
 const SIMILAR_AD_COUNT = 10;
 
 /**
@@ -69,22 +73,22 @@ const getRandomAvatar = (url, format, pictureNumber) => {
 
 /**
  * Helper function that returns random element in array
- * @param {*} array - array of elements
+ * @param {*} items - array of elements
  * @returns random element
  */
-const getRandomArrayElem = (array) => array[getRandomNumber(0, array.length - 1)];
+const getRandomArrayElem = (items) => items[getRandomNumber(0, items.length - 1)];
 
 /**
  * Helper function that returns array with random length values
- * @param {*} array - array of elements
- * @param {*} randomArray - empty array
+ * @param {*} items - array of elements
+ * @param {*} randomItems - empty array
  * @returns returns array
  */
-const getRandomArray = (array, randomArray = []) => {
-  for (let i = 0; i <= getRandomNumber(0, array.length); i++) {
-    randomArray.push(array[i]);
+const getRandomArray = (items, randomItems = []) => {
+  for (let i = 0; i <= getRandomNumber(0, items.length); i++) {
+    randomItems.push(items[i]);
   }
-  return randomArray;
+  return randomItems;
 };
 
 /**
@@ -92,29 +96,28 @@ const getRandomArray = (array, randomArray = []) => {
  * @returns object
  */
 const createAd = () => {
-  const locationLat = getFractionNumber(35.65, 35.7, 5);
-  const locationLng = getFractionNumber(139.7, 139.8, 5);
+  const location = {
+    lat: getFractionNumber(LOCATION_LAT_MIN, LOCATION_LAT_MAX, 5),
+    lng: getFractionNumber(LOCATION_LNG_MIN, LOCATION_LNG_MAX, 5),
+  };
   return {
     author: {
       avatar: getRandomAvatar('img/avatars/user', 'png', 10),
     },
     offer: {
       title: getRandomArrayElem(TITLES),
-      address: `${locationLat}, ${locationLng}`,
+      address: `${location.lat}, ${location.lng}`,
       price: getRandomNumber(1000, 20000),
       type: getRandomArrayElem(TYPES),
       rooms: getRandomNumber(1, 10),
       guests: getRandomNumber(1, 10),
-      checkIn: getRandomArrayElem(CHECKIN),
-      checkOut: getRandomArrayElem(CHECKOUT),
+      checkIn: getRandomArrayElem(TIMES),
+      checkOut: getRandomArrayElem(TIMES),
       features: getRandomArray(FEATURES),
       description: getRandomArrayElem(DESCRIPTIONS),
       photo: getRandomArrayElem(PHOTOS),
     },
-    location: {
-      lat: locationLat,
-      lng: locationLng,
-    },
+    location,
   };
 };
 

@@ -50,7 +50,7 @@ const createAd = () => {
       checkOut: getRandomArrayElem(TIMES),
       features: getRandomArray(FEATURES),
       description: getRandomArrayElem(DESCRIPTIONS),
-      photo: getRandomArrayElem(PHOTOS),
+      photos: getRandomArray(PHOTOS),
     },
     location,
   };

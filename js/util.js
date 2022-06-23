@@ -52,7 +52,7 @@ const getRandomArrayElem = (items) => items[getRandomNumber(0, items.length - 1)
  * @returns returns array
  */
 const getRandomArray = (items, randomItems = []) => {
-  for (let i = 0; i <= getRandomNumber(0, items.length); i++) {
+  for (let i = 0; i <= getRandomNumber(0, items.length - 1); i++) {
     randomItems.push(items[i]);
   }
   return randomItems;

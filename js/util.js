@@ -7,8 +7,7 @@
  * getRandomNumber(1, 3);
  * // => 2
  */
-const getRandomNumber = (min, max) =>
-  min < max && min >= 0 ? Math.round(Math.random() * (max - min) + min) : false;
+const getRandomNumber = (min, max) => (min < max && min >= 0 ? Math.round(Math.random() * (max - min) + min) : false);
 getRandomNumber(0, 3);
 
 /**
@@ -58,4 +57,51 @@ const getRandomArray = (items, randomItems = []) => {
   return randomItems;
 };
 
-export { getRandomNumber, getFractionNumber, getRandomAvatar, getRandomArrayElem, getRandomArray };
+/**
+ * Helper function that adding class to element
+ * @param {*} element - chosen element
+ * @param {*} className - class name to add
+ */
+const addClass = (element, className) => {
+  document.querySelector(element).classList.add(className);
+};
+
+/**
+ * Helper function that removing class from element
+ * @param {*} element - chosen element
+ * @param {*} className - class name to remove
+ */
+const removeClass = (element, className) => {
+  document.querySelector(element).classList.remove(className);
+};
+
+/**
+ * Helper function that setting attribute to elements
+ * @param {*} elements - chosen elements
+ * @param {*} attributeName - attribute name to set
+ * @param {*} attributeValue  - attribute value to set
+ * @returns
+ */
+const setItemsAttribute = (elements, attributeName, attributeValue) =>
+  document.querySelectorAll(elements).forEach((element) => element.setAttribute(attributeName, attributeValue));
+
+/**
+ * Helper function that removing attribute from elements
+ * @param {*} elements - chosen elements
+ * @param {*} attributeName - attribute to remove
+ * @returns
+ */
+const removeItemsAttribute = (elements, attributeName) =>
+  document.querySelectorAll(elements).forEach((element) => element.removeAttribute(attributeName));
+
+export {
+  getRandomNumber,
+  getFractionNumber,
+  getRandomAvatar,
+  getRandomArrayElem,
+  getRandomArray,
+  addClass,
+  removeClass,
+  setItemsAttribute,
+  removeItemsAttribute,
+};

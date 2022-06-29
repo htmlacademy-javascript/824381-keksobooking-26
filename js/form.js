@@ -54,7 +54,7 @@ const validateAdForm = () => {
     if (roomValue === '100') {
       roomValue = '0';
     }
-    return value !== 0 ? Number(value) <= Number(roomValue) : Number(value) === Number(roomValue);
+    return value !== '0' ? Number(value) <= Number(roomValue) : Number(value) === Number(roomValue);
   };
 
   /**

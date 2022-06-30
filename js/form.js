@@ -51,8 +51,8 @@ const validateAdForm = () => {
    */
   const validateGuests = (value) => {
     let roomValue = roomsInput.value;
-    if (roomValue === '100') {
-      roomValue = '0';
+    if (roomValue === Object.keys(roomsGuests)[3]) {
+      roomValue = roomValue.substr(2);
     }
     return value !== '0' ? Number(value) <= Number(roomValue) : Number(value) === Number(roomValue);
   };

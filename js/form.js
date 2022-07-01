@@ -28,11 +28,22 @@ const validateAdForm = () => {
   const adForm = document.querySelector('.ad-form');
   const roomsInput = adForm.querySelector('#room_number');
   const guestsInput = adForm.querySelector('#capacity');
+  const typesInput = adForm.querySelector('#type');
+  const priceInput = adForm.querySelector('#price');
+  const timeInInput = adForm.querySelector('#timein');
+  const timeOutInput = adForm.querySelector('#timeout');
   const roomsGuests = {
     1: 'Не больше 1 гостя',
     2: 'Не больше 2 гостей',
     3: 'Не больше 3 гостей',
     100: 'Не для гостей',
+  };
+  const typesList = {
+    bungalow: '0',
+    flat: '1000',
+    hotel: '3000',
+    house: '5000',
+    palace: '10000',
   };
 
   /**
@@ -78,8 +89,42 @@ const validateAdForm = () => {
   roomsInput.addEventListener('change', onRoomsChange);
 
   /**
-   * Adform event listener for Prestine
+   * Function that change sibling input value from data
+   * @param {*} e - event
+   * @param {*} data - data with values
+   * @param {*} input - element to change
    */
+  const changeSiblingInputValue = (e, data, input) => {
+    const value = data[e.target.value];
+    input.placeholder = value;
+    input.value = value;
+  };
+
+  /**
+   * Function that change select with similar option value
+   * @param {*} e - event
+   * @param {*} select - select input with similar value
+   */
+  const setSimilarOption = (e, select) => {
+    const similarOption = select.querySelector(`option[value="${e.target.value}"]`);
+    similarOption.selected = true;
+  };
+
+  /**
+   * Adform event listeners
+   */
+  typesInput.addEventListener('change', (evt) => {
+    changeSiblingInputValue(evt, typesList, priceInput);
+  });
+
+  timeInInput.addEventListener('change', (evt) => {
+    setSimilarOption(evt, timeOutInput);
+  });
+
+  timeOutInput.addEventListener('change', (evt) => {
+    setSimilarOption(evt, timeInInput);
+  });
+
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     pristine.validate();

@@ -30,6 +30,7 @@ const validateAdForm = () => {
   const guestsInput = adForm.querySelector('#capacity');
   const typesInput = adForm.querySelector('#type');
   const priceInput = adForm.querySelector('#price');
+  const priceSlider = adForm.querySelector('.ad-form__slider');
   const timeInInput = adForm.querySelector('#timein');
   const timeOutInput = adForm.querySelector('#timeout');
   const roomsGuests = {
@@ -111,10 +112,31 @@ const validateAdForm = () => {
   };
 
   /**
+   * Nouislider setup
+   */
+  noUiSlider.create(priceSlider, {
+    range: {
+      min: 0,
+      max: 100000,
+    },
+    start: 1000,
+    step: 1000,
+    connect: 'lower',
+    format: {
+      to: (value) => value.toFixed(0),
+      from: (value) => parseFloat(value),
+    },
+  });
+  priceSlider.noUiSlider.on('update', () => {
+    priceInput.value = priceSlider.noUiSlider.get();
+  });
+
+  /**
    * Adform event listeners
    */
   typesInput.addEventListener('change', (evt) => {
     changeSiblingInputValue(evt, typesList, priceInput);
+    priceSlider.noUiSlider.set(typesList[evt.target.value]);
   });
 
   timeInInput.addEventListener('change', (evt) => {
@@ -128,6 +150,10 @@ const validateAdForm = () => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     pristine.validate();
+  });
+
+  priceInput.addEventListener('change', function () {
+    priceSlider.noUiSlider.set(this.value);
   });
 };
 

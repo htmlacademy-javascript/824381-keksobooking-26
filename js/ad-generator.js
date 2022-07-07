@@ -1,16 +1,13 @@
-import { getSimilarAd } from './data.js';
 /**
  * Variables for creating ad generator
  */
-const randomData = getSimilarAd();
 const template = document.querySelector('#card').content.querySelector('.popup');
 const cardsListFragment = document.createDocumentFragment();
-const map = document.querySelector('#map-canvas');
 
 /**
- * Loop for random data. Creating some ad items.
+ * Function that create ad
  */
-randomData.forEach(({ author, offer }, index) => {
+const generateAd = (author, offer) => {
   const card = template.cloneNode(true);
   const featuresListItems = card.querySelectorAll('.popup__feature');
   const typesTranslate = {
@@ -35,8 +32,7 @@ randomData.forEach(({ author, offer }, index) => {
    * @param {*} content - text content for item
    * @returns - card item with text
    */
-  const fillTextElem = (elem, content) =>
-    content ? (card.querySelector(elem).textContent = content) : hideElem(elem);
+  const fillTextElem = (elem, content) => (content ? (card.querySelector(elem).textContent = content) : hideElem(elem));
 
   /**
    * Helper function that fill attribute in card item
@@ -78,14 +74,11 @@ randomData.forEach(({ author, offer }, index) => {
   }
 
   /**
-   * Append generating test-card in fragment element
+   * Append generating card in fragment element
    */
-  if (index === 0) {
-    cardsListFragment.append(card);
-  }
-});
+  cardsListFragment.append(card);
 
-/**
- * Append fragment in map element
- */
-map.append(cardsListFragment);
+  return card;
+};
+
+export { generateAd };

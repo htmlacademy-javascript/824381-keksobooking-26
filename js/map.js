@@ -1,16 +1,17 @@
 import { enableForms } from './form.js';
-import { getSimilarAd } from './data.js';
+import { getSimilarAds } from './server.js';
 import { generateAd } from './ad-generator.js';
+import { showError } from './util.js';
 
 /**
  * Variables for map and form update
  */
-const randomData = getSimilarAd();
-const adressInput = document.querySelector('#address');
-const mainAdress = {
+const SIMILAR_ADS_COUNT = 10;
+const MAIN_ADRESS = {
   lat: 35.6895,
   lng: 139.692,
 };
+const adressInput = document.querySelector('#address');
 
 /**
  * Function that fill adress input
@@ -19,7 +20,7 @@ const mainAdress = {
  */
 const fillInputValue = (adress) => `${Object.keys(adress)[0]}: ${adress.lat}, ${Object.keys(adress)[1]}:${adress.lng}`;
 
-adressInput.value = fillInputValue(mainAdress);
+adressInput.value = fillInputValue(MAIN_ADRESS);
 
 /**
  * Leaflet map setup
@@ -30,8 +31,8 @@ const map = L.map('map-canvas')
   })
   .setView(
     {
-      lat: mainAdress.lat,
-      lng: mainAdress.lng,
+      lat: MAIN_ADRESS.lat,
+      lng: MAIN_ADRESS.lng,
     },
     13
   );
@@ -52,8 +53,8 @@ const mainPinIcon = L.icon({
 
 const mainPinMarker = L.marker(
   {
-    lat: mainAdress.lat,
-    lng: mainAdress.lng,
+    lat: MAIN_ADRESS.lat,
+    lng: MAIN_ADRESS.lng,
   },
   {
     draggable: true,
@@ -94,6 +95,12 @@ const createRegularPin = (item) => {
   marker.addTo(map).bindPopup(generateAd(item.author, item.offer));
 };
 
-randomData.forEach((dataPin) => {
-  createRegularPin(dataPin);
-});
+/**
+ * Create regular pins
+ */
+getSimilarAds((data) => {
+  const adsData = data.slice(0, SIMILAR_ADS_COUNT);
+  adsData.forEach((dataPin) => {
+    createRegularPin(dataPin);
+  });
+}, showError);

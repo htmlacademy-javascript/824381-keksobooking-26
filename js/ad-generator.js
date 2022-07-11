@@ -48,16 +48,18 @@ const generateAd = (author, offer) => {
   fillTextElem('.popup__text--address', offer.address);
   fillTextElem('.popup__text--price', `${offer.price} ₽/ночь`);
   fillTextElem('.popup__text--capacity', `${offer.rooms} комнаты для ${offer.guests} гостей`);
-  fillTextElem('.popup__text--time', `Заезд после ${offer.checkIn}, выезд до ${offer.checkOut} гостей`);
+  fillTextElem('.popup__text--time', `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`);
   fillTextElem('.popup__description', offer.description);
   fillTextElem('.popup__type', typesTranslate[offer.type]);
   fillAttributeElem('.popup__avatar', 'src', author.avatar);
 
-  featuresListItems.forEach((item) => {
-    if (!offer.features.some((feature) => item.classList.contains(`popup__feature--${feature}`))) {
-      item.remove();
-    }
-  });
+  if (offer.features) {
+    featuresListItems.forEach((item) => {
+      if (!offer.features.some((feature) => item.classList.contains(`popup__feature--${feature}`))) {
+        item.remove();
+      }
+    });
+  }
 
   fillAttributeElem('.popup__photo', 'src', offer.photos[0]);
   /**

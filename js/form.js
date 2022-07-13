@@ -1,4 +1,7 @@
-import { addClass, removeClass, setItemsAttribute, removeItemsAttribute } from './util.js';
+import { addClass, removeClass, setItemsAttribute, removeItemsAttribute, addPopup } from './util.js';
+import { setMainPinDefault, closeMapPopup } from './map.js';
+import { sendData } from './server.js';
+
 /**
  * Function that disable page's forms and inputs
  */
@@ -23,7 +26,7 @@ const enableForms = () => {
 
 const validateAdForm = () => {
   /**
-   * Variables for form validation
+   * Form variables
    */
   const adForm = document.querySelector('.ad-form');
   const roomsInput = adForm.querySelector('#room_number');
@@ -33,19 +36,26 @@ const validateAdForm = () => {
   const priceSlider = adForm.querySelector('.ad-form__slider');
   const timeInInput = adForm.querySelector('#timein');
   const timeOutInput = adForm.querySelector('#timeout');
-  const roomsGuests = {
+  const submitButton = adForm.querySelector('.ad-form__submit');
+  const resetButton = adForm.querySelector('.ad-form__reset');
+  /**
+   * Data variables
+   */
+  const ROOMS_GUESTS = {
     1: 'Не больше 1 гостя',
     2: 'Не больше 2 гостей',
     3: 'Не больше 3 гостей',
     100: 'Не для гостей',
   };
-  const typesList = {
+  const TYPES_LIST = {
     bungalow: '0',
     flat: '1000',
     hotel: '3000',
     house: '5000',
     palace: '10000',
   };
+  const SUBMIT_BUTTON_BLOCKED_TXT = 'Публикую...';
+  const SUBMIT_BUTTON_TXT = 'Опубликовать';
 
   /**
    * Prisitne library setup
@@ -63,7 +73,7 @@ const validateAdForm = () => {
    */
   const validateGuests = (value) => {
     let roomValue = roomsInput.value;
-    if (roomValue === Object.keys(roomsGuests)[3]) {
+    if (roomValue === Object.keys(ROOMS_GUESTS)[3]) {
       roomValue = roomValue.substr(2);
     }
     return value !== '0' ? Number(value) <= Number(roomValue) : Number(value) === Number(roomValue);
@@ -75,7 +85,7 @@ const validateAdForm = () => {
    */
   const getGuestsErrorMessage = () => {
     const roomValue = roomsInput.value;
-    return roomsGuests[roomValue];
+    return ROOMS_GUESTS[roomValue];
   };
 
   /**
@@ -84,10 +94,9 @@ const validateAdForm = () => {
   pristine.addValidator(guestsInput, validateGuests, getGuestsErrorMessage);
 
   /**
-   * Bind guestsInput and roomsInput for correct validation
+   * Function that bind guestsInput and roomsInput for correct validation
    */
   const onRoomsChange = () => pristine.validate(guestsInput);
-  roomsInput.addEventListener('change', onRoomsChange);
 
   /**
    * Function that change sibling input value from data
@@ -132,11 +141,39 @@ const validateAdForm = () => {
   });
 
   /**
+   * Function that block submit button
+   */
+  const blockSubmitButton = () => {
+    submitButton.disabled = true;
+    submitButton.textContent = SUBMIT_BUTTON_BLOCKED_TXT;
+  };
+
+  /**
+   * Function that unblock submit button
+   */
+  const unblockSubmitButton = () => {
+    submitButton.disabled = false;
+    submitButton.textContent = SUBMIT_BUTTON_TXT;
+  };
+
+  /**
+   * Function that reset the form to default values
+   */
+  const resetForm = () => {
+    adForm.reset();
+    priceSlider.noUiSlider.set(TYPES_LIST.flat);
+    setMainPinDefault();
+    closeMapPopup();
+  };
+
+  /**
    * Adform event listeners
    */
+  roomsInput.addEventListener('change', onRoomsChange);
+
   typesInput.addEventListener('change', (evt) => {
-    changeSiblingInputValue(evt, typesList, priceInput);
-    priceSlider.noUiSlider.set(typesList[evt.target.value]);
+    changeSiblingInputValue(evt, TYPES_LIST, priceInput);
+    priceSlider.noUiSlider.set(TYPES_LIST[evt.target.value]);
   });
 
   timeInInput.addEventListener('change', (evt) => {
@@ -147,13 +184,33 @@ const validateAdForm = () => {
     setSimilarOption(evt, timeInInput);
   });
 
-  adForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    pristine.validate();
-  });
-
   priceInput.addEventListener('change', function () {
     priceSlider.noUiSlider.set(this.value);
+  });
+
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const valid = pristine.validate();
+    if (valid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          addPopup('success');
+          unblockSubmitButton();
+          resetForm();
+        },
+        () => {
+          addPopup('error');
+          unblockSubmitButton();
+        },
+        new FormData(evt.target)
+      );
+    }
+  });
+
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetForm();
   });
 };
 

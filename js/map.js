@@ -1,16 +1,20 @@
 import { enableForms } from './form.js';
-import { getSimilarAd } from './data.js';
+import { getData } from './server.js';
 import { generateAd } from './ad-generator.js';
+import { showError } from './util.js';
 
 /**
- * Variables for map and form update
+ * Variables for map
  */
-const randomData = getSimilarAd();
-const adressInput = document.querySelector('#address');
-const mainAdress = {
+const SIMILAR_ADS_COUNT = 10;
+const MAIN_ADRESS = {
   lat: 35.6895,
   lng: 139.692,
 };
+/**
+ * Variable for form input
+ */
+const adressInput = document.querySelector('#address');
 
 /**
  * Function that fill adress input
@@ -18,8 +22,7 @@ const mainAdress = {
  * @returns - string with lat. and lng. values
  */
 const fillInputValue = (adress) => `${Object.keys(adress)[0]}: ${adress.lat}, ${Object.keys(adress)[1]}:${adress.lng}`;
-
-adressInput.value = fillInputValue(mainAdress);
+adressInput.value = fillInputValue(MAIN_ADRESS);
 
 /**
  * Leaflet map setup
@@ -30,8 +33,8 @@ const map = L.map('map-canvas')
   })
   .setView(
     {
-      lat: mainAdress.lat,
-      lng: mainAdress.lng,
+      lat: MAIN_ADRESS.lat,
+      lng: MAIN_ADRESS.lng,
     },
     13
   );
@@ -52,8 +55,8 @@ const mainPinIcon = L.icon({
 
 const mainPinMarker = L.marker(
   {
-    lat: mainAdress.lat,
-    lng: mainAdress.lng,
+    lat: MAIN_ADRESS.lat,
+    lng: MAIN_ADRESS.lng,
   },
   {
     draggable: true,
@@ -94,6 +97,29 @@ const createRegularPin = (item) => {
   marker.addTo(map).bindPopup(generateAd(item.author, item.offer));
 };
 
-randomData.forEach((dataPin) => {
-  createRegularPin(dataPin);
-});
+/**
+ * Add regular pins from server data
+ */
+getData((data) => {
+  const adsData = data.slice(0, SIMILAR_ADS_COUNT);
+  adsData.forEach((dataPin) => {
+    createRegularPin(dataPin);
+  });
+}, showError);
+
+/**
+ * Function that close baloon for regular pin
+ */
+const closeMapPopup = () => {
+  map.closePopup();
+};
+
+/**
+ * Function that set main pin to default values
+ */
+const setMainPinDefault = () => {
+  mainPinMarker.setLatLng([MAIN_ADRESS.lat, MAIN_ADRESS.lng]);
+  adressInput.value = fillInputValue(MAIN_ADRESS);
+};
+
+export { setMainPinDefault, closeMapPopup };

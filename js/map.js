@@ -1,16 +1,19 @@
 import { enableForms } from './form.js';
-import { getSimilarAds } from './server.js';
+import { getData } from './server.js';
 import { generateAd } from './ad-generator.js';
 import { showError } from './util.js';
 
 /**
- * Variables for map and form update
+ * Variables for map
  */
 const SIMILAR_ADS_COUNT = 10;
 const MAIN_ADRESS = {
   lat: 35.6895,
   lng: 139.692,
 };
+/**
+ * Variable for form input
+ */
 const adressInput = document.querySelector('#address');
 
 /**
@@ -19,7 +22,6 @@ const adressInput = document.querySelector('#address');
  * @returns - string with lat. and lng. values
  */
 const fillInputValue = (adress) => `${Object.keys(adress)[0]}: ${adress.lat}, ${Object.keys(adress)[1]}:${adress.lng}`;
-
 adressInput.value = fillInputValue(MAIN_ADRESS);
 
 /**
@@ -96,11 +98,28 @@ const createRegularPin = (item) => {
 };
 
 /**
- * Create regular pins
+ * Add regular pins from server data
  */
-getSimilarAds((data) => {
+getData((data) => {
   const adsData = data.slice(0, SIMILAR_ADS_COUNT);
   adsData.forEach((dataPin) => {
     createRegularPin(dataPin);
   });
 }, showError);
+
+/**
+ * Function that close baloon for regular pin
+ */
+const closeMapPopup = () => {
+  map.closePopup();
+};
+
+/**
+ * Function that set main pin to default values
+ */
+const setMainPinDefault = () => {
+  mainPinMarker.setLatLng([MAIN_ADRESS.lat, MAIN_ADRESS.lng]);
+  adressInput.value = fillInputValue(MAIN_ADRESS);
+};
+
+export { setMainPinDefault, closeMapPopup };

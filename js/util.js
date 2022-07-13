@@ -54,4 +54,39 @@ const showError = (message) => {
   }, ERROR_SHOW_TIME);
 };
 
-export { addClass, removeClass, setItemsAttribute, removeItemsAttribute, showError };
+/**
+ * Function that add popup
+ * @param {*} name - name of the popup selector
+ */
+const addPopup = (name) => {
+  /**
+   * Variables for creating popup
+   */
+  const body = document.querySelector('body');
+  const popupClone = body.querySelector(`#${name}`).content.querySelector(`.${name}`).cloneNode(true);
+  const popupFragment = document.createDocumentFragment();
+
+  popupFragment.append(popupClone);
+  body.append(popupFragment);
+
+  /**
+   * Function that remove popup and event listeners
+   * @param {*} e - event
+   */
+  const removePopup = (e) => {
+    if (e.button === 0 || e.key === 'Escape') {
+      const popup = document.querySelector(`.${name}`);
+      popup.remove();
+      body.removeEventListener('click', removePopup);
+      body.removeEventListener('keydown', removePopup);
+    }
+  };
+
+  /**
+   * Event listeners
+   */
+  body.addEventListener('click', removePopup);
+  body.addEventListener('keydown', removePopup);
+};
+
+export { addClass, removeClass, setItemsAttribute, removeItemsAttribute, showError, addPopup };

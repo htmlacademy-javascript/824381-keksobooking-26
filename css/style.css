@@ -304,6 +304,7 @@ fieldset {
 
   border-radius: 5px;
   background-color: #dadada;
+  position: relative;
 }
 
 .ad-form__field {
@@ -604,6 +605,7 @@ fieldset {
 
   background-color: #e4e4de;
   border-radius: 5px;
+  position: relative;
 }
 
 .ad-form__element--submit {
@@ -1064,4 +1066,24 @@ fieldset {
   100% {
     opacity: 0;
   }
+}
+
+.preview-container {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  border-radius: 5px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.preview-container_small {
+  width: 45px;
+  height: 45px;
+  border-radius: 3px;
 }

@@ -38,6 +38,10 @@ const validateAdForm = () => {
   const timeOutInput = adForm.querySelector('#timeout');
   const submitButton = adForm.querySelector('.ad-form__submit');
   const resetButton = adForm.querySelector('.ad-form__reset');
+  const photoAvatarChoser = adForm.querySelector('.ad-form-header__input');
+  const photoAvatarPreview = adForm.querySelector('.ad-form-header__preview');
+  const photoHousingChoser = adForm.querySelector('.ad-form__input');
+  const photoHousingPreview = adForm.querySelector('.ad-form__photo');
   /**
    * Data variables
    */
@@ -56,6 +60,7 @@ const validateAdForm = () => {
   };
   const SUBMIT_BUTTON_BLOCKED_TXT = 'Публикую...';
   const SUBMIT_BUTTON_TXT = 'Опубликовать';
+  const IMAGE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   /**
    * Prisitne library setup
@@ -157,12 +162,45 @@ const validateAdForm = () => {
   };
 
   /**
+   * Function that set photo to preview relement
+   * @param {*} choser - input element for choose image
+   * @param {*} preview - container element for preview
+   */
+  const setPhotoPreview = (choser, preview) => {
+    const file = choser.files[0];
+    const fileName = file.name.toLowerCase();
+
+    const matches = IMAGE_TYPES.some((format) => {
+      return fileName.endsWith(format);
+    });
+    if (matches) {
+      const image = document.createElement('div');
+      preview.querySelector('img')
+        ? image.classList.add('preview-container', 'preview-container_small')
+        : image.classList.add('preview-container');
+      image.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
+      preview.append(image);
+    }
+  };
+
+  /**
+   * Function that remove previews images
+   */
+  const removePhotoPreviews = () => {
+    const photoPreviews = adForm.querySelectorAll('.preview-container ');
+    if (photoPreviews) {
+      photoPreviews.forEach((item) => item.remove());
+    }
+  };
+
+  /**
    * Function that reset the form to default values
    */
   const resetForm = () => {
     adForm.reset();
     priceSlider.noUiSlider.set(TYPES_LIST.flat);
     setMainPinDefault();
+    removePhotoPreviews();
     closeMapPopup();
   };
 
@@ -186,6 +224,14 @@ const validateAdForm = () => {
 
   priceInput.addEventListener('change', function () {
     priceSlider.noUiSlider.set(this.value);
+  });
+
+  photoAvatarChoser.addEventListener('change', (e) => {
+    setPhotoPreview(e.target, photoAvatarPreview);
+  });
+
+  photoHousingChoser.addEventListener('change', (e) => {
+    setPhotoPreview(e.target, photoHousingPreview);
   });
 
   adForm.addEventListener('submit', (evt) => {

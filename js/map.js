@@ -82,6 +82,11 @@ const regularPinIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
+/**
+ * Map layer for regular markers
+ */
+const regularMarkersLayer = L.layerGroup().addTo(map);
+
 const createRegularPin = (item) => {
   const lat = item.location.lat;
   const lng = item.location.lng;
@@ -94,7 +99,7 @@ const createRegularPin = (item) => {
       icon: regularPinIcon,
     }
   );
-  marker.addTo(map).bindPopup(generateAd(item.author, item.offer));
+  marker.addTo(regularMarkersLayer).bindPopup(generateAd(item.author, item.offer));
 };
 
 /**

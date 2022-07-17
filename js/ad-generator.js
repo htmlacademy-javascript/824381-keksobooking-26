@@ -8,9 +8,17 @@ const cardsListFragment = document.createDocumentFragment();
  * Function that create ad
  */
 const generateAd = (author, offer) => {
+  /**
+   * Variables for creating ad
+   */
   const card = template.cloneNode(true);
   const featuresListItems = card.querySelectorAll('.popup__feature');
-  const typesTranslate = {
+  const photoContainer = card.querySelector('.popup__photos');
+  const photoImg = photoContainer.querySelector('.popup__photo');
+  /**
+   * Ad data variable
+   */
+  const TYPES_TRANSLATE = {
     flat: 'Квартира',
     bungalow: 'Бунгало',
     house: 'Дом',
@@ -50,7 +58,7 @@ const generateAd = (author, offer) => {
   fillTextElem('.popup__text--capacity', `${offer.rooms} комнаты для ${offer.guests} гостей`);
   fillTextElem('.popup__text--time', `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`);
   fillTextElem('.popup__description', offer.description);
-  fillTextElem('.popup__type', typesTranslate[offer.type]);
+  fillTextElem('.popup__type', TYPES_TRANSLATE[offer.type]);
   fillAttributeElem('.popup__avatar', 'src', author.avatar);
 
   if (offer.features) {
@@ -61,18 +69,20 @@ const generateAd = (author, offer) => {
     });
   }
 
-  fillAttributeElem('.popup__photo', 'src', offer.photos[0]);
-  /**
-   * Check if there more than 1 photo, then clone photo element
-   */
-  if (offer.photos.length > 1) {
-    const photoContainer = card.querySelector('.popup__photos');
-    const photoImg = photoContainer.querySelector('.popup__photo');
-    for (let i = 1; i < offer.photos.length; i++) {
-      const photoElem = photoImg.cloneNode(true);
-      photoElem.setAttribute('src', offer.photos[i]);
-      photoContainer.append(photoElem);
+  if (offer.photos) {
+    fillAttributeElem('.popup__photo', 'src', offer.photos[0]);
+    /**
+     * Check if there more than 1 photo, then clone photo element
+     */
+    if (offer.photos.length > 1) {
+      for (let i = 1; i < offer.photos.length; i++) {
+        const photoElem = photoImg.cloneNode(true);
+        photoElem.setAttribute('src', offer.photos[i]);
+        photoContainer.append(photoElem);
+      }
     }
+  } else {
+    photoContainer.remove();
   }
 
   /**

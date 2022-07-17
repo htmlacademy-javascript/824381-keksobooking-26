@@ -1,16 +1,14 @@
 import { enableForms } from './form.js';
-import { getData } from './server.js';
 import { generateAd } from './ad-generator.js';
-import { showError } from './util.js';
 
 /**
  * Variables for map
  */
-const SIMILAR_ADS_COUNT = 10;
 const MAIN_ADRESS = {
   lat: 35.6895,
   lng: 139.692,
 };
+const SIMILAR_ADS_COUNT = 10;
 /**
  * Variable for form input
  */
@@ -87,6 +85,10 @@ const regularPinIcon = L.icon({
  */
 const regularMarkersLayer = L.layerGroup().addTo(map);
 
+/**
+ * Function that create regular pin
+ * @param {*} item - data for regular pin
+ */
 const createRegularPin = (item) => {
   const lat = item.location.lat;
   const lng = item.location.lng;
@@ -103,14 +105,22 @@ const createRegularPin = (item) => {
 };
 
 /**
- * Add regular pins from server data
+ * Function that create regular pins
+ * @param {*} items - data for regular pins
  */
-getData((data) => {
-  const adsData = data.slice(0, SIMILAR_ADS_COUNT);
-  adsData.forEach((dataPin) => {
-    createRegularPin(dataPin);
+const createRegularPins = (items) => {
+  const adsData = items.slice(0, SIMILAR_ADS_COUNT);
+  adsData.forEach((point) => {
+    createRegularPin(point);
   });
-}, showError);
+};
+
+/**
+ * Function that clear regular merkers layer
+ */
+const clearRegularPins = () => {
+  regularMarkersLayer.clearLayers();
+};
 
 /**
  * Function that close baloon for regular pin
@@ -127,4 +137,4 @@ const setMainPinDefault = () => {
   adressInput.value = fillInputValue(MAIN_ADRESS);
 };
 
-export { setMainPinDefault, closeMapPopup };
+export { setMainPinDefault, closeMapPopup, createRegularPin, createRegularPins, clearRegularPins };

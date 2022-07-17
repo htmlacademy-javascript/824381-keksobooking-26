@@ -91,7 +91,7 @@ const addPopup = (name) => {
 };
 
 /**
- * Helper function that debounce function calls when too many requests
+ * Helper function that debounce function call when too many requests
  * @param {*} callback - function callback
  * @param {*} timeoutDelay - delay for next request
  * @returns - debounced function
@@ -99,6 +99,7 @@ const addPopup = (name) => {
 const debounce = (callback, timeoutDelay = TIMEOUT_DELAY) => {
   let timeoutId;
   return (...rest) => {
+    console.log('123');
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };

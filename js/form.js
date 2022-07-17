@@ -162,7 +162,7 @@ const validateAdForm = () => {
   };
 
   /**
-   * Function that set photo to preview relement
+   * Function that set photo to preview element
    * @param {*} choser - input element for choose image
    * @param {*} preview - container element for preview
    */
@@ -170,14 +170,14 @@ const validateAdForm = () => {
     const file = choser.files[0];
     const fileName = file.name.toLowerCase();
 
-    const matches = IMAGE_TYPES.some((format) => {
-      return fileName.endsWith(format);
-    });
+    const matches = IMAGE_TYPES.some((format) => fileName.endsWith(format));
     if (matches) {
       const image = document.createElement('div');
-      preview.querySelector('img')
-        ? image.classList.add('preview-container', 'preview-container_small')
-        : image.classList.add('preview-container');
+      if (preview.querySelector('img')) {
+        image.classList.add('preview-container', 'preview-container_small');
+      } else {
+        image.classList.add('preview-container');
+      }
       image.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
       preview.append(image);
     }

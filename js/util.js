@@ -2,6 +2,7 @@
  * Helpers variable
  */
 const ERROR_SHOW_TIME = 5000;
+const TIMEOUT_DELAY = 500;
 
 /**
  * Helper function that adding class to element
@@ -55,7 +56,7 @@ const showError = (message) => {
 };
 
 /**
- * Function that add popup
+ * Helper function that add popup
  * @param {*} name - name of the popup selector
  */
 const addPopup = (name) => {
@@ -89,4 +90,18 @@ const addPopup = (name) => {
   body.addEventListener('keydown', removePopup);
 };
 
-export { addClass, removeClass, setItemsAttribute, removeItemsAttribute, showError, addPopup };
+/**
+ * Helper function that debounce function call when too many requests
+ * @param {*} callback - function callback
+ * @param {*} timeoutDelay - delay for next request
+ * @returns - debounced function
+ */
+const debounce = (callback, timeoutDelay = TIMEOUT_DELAY) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export { addClass, removeClass, setItemsAttribute, removeItemsAttribute, showError, addPopup, debounce };

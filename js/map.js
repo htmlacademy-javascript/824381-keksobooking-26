@@ -1,16 +1,13 @@
-import { enableForms } from './form.js';
-import { getData } from './server.js';
 import { generateAd } from './ad-generator.js';
-import { showError } from './util.js';
 
 /**
  * Variables for map
  */
-const SIMILAR_ADS_COUNT = 10;
 const MAIN_ADRESS = {
   lat: 35.6895,
   lng: 139.692,
 };
+const SIMILAR_ADS_COUNT = 10;
 /**
  * Variable for form input
  */
@@ -27,17 +24,13 @@ adressInput.value = fillInputValue(MAIN_ADRESS);
 /**
  * Leaflet map setup
  */
-const map = L.map('map-canvas')
-  .on('load', () => {
-    enableForms();
-  })
-  .setView(
-    {
-      lat: MAIN_ADRESS.lat,
-      lng: MAIN_ADRESS.lng,
-    },
-    13
-  );
+const map = L.map('map-canvas').setView(
+  {
+    lat: MAIN_ADRESS.lat,
+    lng: MAIN_ADRESS.lng,
+  },
+  13
+);
 L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
   maxZoom: 20,
   attribution:
@@ -82,6 +75,15 @@ const regularPinIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
+/**
+ * Map layer for regular markers
+ */
+const regularMarkersLayer = L.layerGroup().addTo(map);
+
+/**
+ * Function that create regular pin
+ * @param {*} item - data for regular pin
+ */
 const createRegularPin = (item) => {
   const lat = item.location.lat;
   const lng = item.location.lng;
@@ -94,18 +96,26 @@ const createRegularPin = (item) => {
       icon: regularPinIcon,
     }
   );
-  marker.addTo(map).bindPopup(generateAd(item.author, item.offer));
+  marker.addTo(regularMarkersLayer).bindPopup(generateAd(item.author, item.offer));
 };
 
 /**
- * Add regular pins from server data
+ * Function that create regular pins
+ * @param {*} items - data for regular pins
  */
-getData((data) => {
-  const adsData = data.slice(0, SIMILAR_ADS_COUNT);
-  adsData.forEach((dataPin) => {
-    createRegularPin(dataPin);
+const createRegularPins = (items) => {
+  const adsData = items.slice(0, SIMILAR_ADS_COUNT);
+  adsData.forEach((point) => {
+    createRegularPin(point);
   });
-}, showError);
+};
+
+/**
+ * Function that clear regular merkers layer
+ */
+const clearRegularPins = () => {
+  regularMarkersLayer.clearLayers();
+};
 
 /**
  * Function that close baloon for regular pin
@@ -122,4 +132,4 @@ const setMainPinDefault = () => {
   adressInput.value = fillInputValue(MAIN_ADRESS);
 };
 
-export { setMainPinDefault, closeMapPopup };
+export { setMainPinDefault, closeMapPopup, createRegularPin, createRegularPins, clearRegularPins };

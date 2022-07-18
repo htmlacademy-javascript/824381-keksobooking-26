@@ -1,6 +1,7 @@
 import { addClass, removeClass, setItemsAttribute, removeItemsAttribute, addPopup } from './util.js';
 import { setMainPinDefault, closeMapPopup } from './map.js';
 import { sendData } from './server.js';
+import { removeAvatarPreviews, enableAvatarPreviews } from './avatar.js';
 
 /**
  * Function that disable page's forms and inputs
@@ -163,8 +164,14 @@ const validateAdForm = () => {
     adForm.reset();
     priceSlider.noUiSlider.set(TYPES_LIST.flat);
     setMainPinDefault();
+    removeAvatarPreviews();
     closeMapPopup();
   };
+
+  /**
+   * Enable form avatar photo previews
+   */
+  enableAvatarPreviews();
 
   /**
    * Adform event listeners

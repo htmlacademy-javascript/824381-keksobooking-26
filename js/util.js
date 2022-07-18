@@ -56,7 +56,7 @@ const showError = (message) => {
 };
 
 /**
- * Function that add popup
+ * Helper function that add popup
  * @param {*} name - name of the popup selector
  */
 const addPopup = (name) => {
@@ -99,7 +99,6 @@ const addPopup = (name) => {
 const debounce = (callback, timeoutDelay = TIMEOUT_DELAY) => {
   let timeoutId;
   return (...rest) => {
-    console.log('123');
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };

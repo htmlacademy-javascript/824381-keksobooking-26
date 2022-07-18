@@ -1,4 +1,3 @@
-import { enableForms } from './form.js';
 import { generateAd } from './ad-generator.js';
 
 /**
@@ -25,17 +24,13 @@ adressInput.value = fillInputValue(MAIN_ADRESS);
 /**
  * Leaflet map setup
  */
-const map = L.map('map-canvas')
-  .on('load', () => {
-    enableForms();
-  })
-  .setView(
-    {
-      lat: MAIN_ADRESS.lat,
-      lng: MAIN_ADRESS.lng,
-    },
-    13
-  );
+const map = L.map('map-canvas').setView(
+  {
+    lat: MAIN_ADRESS.lat,
+    lng: MAIN_ADRESS.lng,
+  },
+  13
+);
 L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
   maxZoom: 20,
   attribution:

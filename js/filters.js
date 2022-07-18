@@ -77,7 +77,6 @@ const enableFilters = (data) => {
      * An empty array to fill with the appropriate object data
      */
     const filteredAds = [];
-
     for (const ad of data) {
       if (filteredAds.length >= SIMILAR_ADS_COUNT) {
         break;
@@ -92,9 +91,11 @@ const enableFilters = (data) => {
         filteredAds.push(ad);
       }
     }
-    filteredAds.forEach((point) => {
-      createRegularPin(point);
-    });
+    debounce(() => {
+      filteredAds.forEach((point) => {
+        createRegularPin(point);
+      });
+    })();
   });
 };
 

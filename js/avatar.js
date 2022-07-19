@@ -1,7 +1,7 @@
 /**
  * Avatar data variable
  */
-const IMAGE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const FILES_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 /**
  * Function that enable avatar photo previews
@@ -24,7 +24,7 @@ const enableAvatarPreviews = () => {
     const file = choser.files[0];
     const fileName = file.name.toLowerCase();
 
-    const matches = IMAGE_TYPES.some((format) => fileName.endsWith(format));
+    const matches = FILES_TYPES.some((format) => fileName.endsWith(format));
     if (matches) {
       const imageElement = document.createElement('div');
       if (preview.querySelector('img')) {

@@ -60,11 +60,7 @@ const mainPinMarker = L.marker(
 
 mainPinMarker.on('moveend', (evt) => {
   const updatedMainAddress = evt.target.getLatLng();
-
-  Object.keys(updatedMainAddress).forEach(
-    (key) => (updatedMainAddress[key] = Number(updatedMainAddress[key].toFixed(5)))
-  );
-  addressElement.value = fillInputValue(updatedMainAddress);
+  addressElement.value = `${updatedMainAddress.lat.toFixed(5)}, ${updatedMainAddress.lng.toFixed(5)}`;
 });
 
 mainPinMarker.addTo(map);

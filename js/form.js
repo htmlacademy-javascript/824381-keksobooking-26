@@ -99,7 +99,7 @@ const validateAdForm = () => {
   /**
    * Function that bind guests input and rooms input for correct validation
    */
-  const onRoomsChange = () => pristine.validate(guestsElement);
+  const validateInputs = () => pristine.validate(guestsElement);
 
   /**
    * Function that change sibling input value from data
@@ -179,7 +179,7 @@ const validateAdForm = () => {
   /**
    * Adform event listeners
    */
-  roomsElement.addEventListener('change', onRoomsChange);
+  roomsElement.addEventListener('change', validateInputs);
 
   typesElement.addEventListener('change', (evt) => {
     changeSiblingInputValue(evt, TYPES_LIST, priceElement);

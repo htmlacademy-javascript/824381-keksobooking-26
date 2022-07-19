@@ -12,7 +12,7 @@ const SIMILAR_ADS_COUNT = 10;
 /**
  * Variable for form input
  */
-const addressInput = document.querySelector('#address');
+const addressElement = document.querySelector('#address');
 
 /**
  * Function that fill address input
@@ -20,7 +20,7 @@ const addressInput = document.querySelector('#address');
  * @returns - string with lat. and lng. values
  */
 const fillInputValue = (address) => `${address.lat}, ${address.lng}`;
-addressInput.value = fillInputValue(MAIN_ADDRESS);
+addressElement.value = fillInputValue(MAIN_ADDRESS);
 
 /**
  * Leaflet map setup
@@ -64,7 +64,7 @@ mainPinMarker.on('moveend', (evt) => {
   Object.keys(updatedMainAddress).forEach(
     (key) => (updatedMainAddress[key] = Number(updatedMainAddress[key].toFixed(5)))
   );
-  addressInput.value = fillInputValue(updatedMainAddress);
+  addressElement.value = fillInputValue(updatedMainAddress);
 });
 
 mainPinMarker.addTo(map);
@@ -132,7 +132,7 @@ const closeMapPopup = () => {
  */
 const setMainPinDefault = () => {
   mainPinMarker.setLatLng([MAIN_ADDRESS.lat, MAIN_ADDRESS.lng]);
-  addressInput.value = fillInputValue(MAIN_ADDRESS);
+  addressElement.value = fillInputValue(MAIN_ADDRESS);
 };
 
 export { setMainPinDefault, closeMapPopup, createRegularPin, createRegularPins, clearRegularPins };

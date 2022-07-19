@@ -1,4 +1,9 @@
 /**
+ * Avatar data variable
+ */
+const IMAGE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
+/**
  * Function that enable avatar photo previews
  */
 const enableAvatarPreviews = () => {
@@ -9,10 +14,6 @@ const enableAvatarPreviews = () => {
   const photoAvatarPreview = document.querySelector('.ad-form-header__preview');
   const photoHousingChoser = document.querySelector('.ad-form__input');
   const photoHousingPreview = document.querySelector('.ad-form__photo');
-  /**
-   * Data variables
-   */
-  const IMAGE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   /**
    * Function that set photo to preview element

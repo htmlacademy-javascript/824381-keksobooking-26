@@ -8,6 +8,7 @@ const MAIN_ADDRESS = {
   lng: 139.74611,
 };
 const SIMILAR_ADS_COUNT = 10;
+
 /**
  * Variable for form input
  */

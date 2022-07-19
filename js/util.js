@@ -1,5 +1,5 @@
 /**
- * Helpers variable
+ * Helpers variables
  */
 const ERROR_SHOW_TIME = 5000;
 const TIMEOUT_DELAY = 500;

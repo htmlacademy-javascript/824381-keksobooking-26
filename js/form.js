@@ -4,6 +4,25 @@ import { sendData } from './server.js';
 import { removeAvatarPreviews, enableAvatarPreviews } from './avatar.js';
 
 /**
+ * Form data variables
+ */
+const ROOMS_GUESTS = {
+  1: 'Не больше 1 гостя',
+  2: 'Не больше 2 гостей',
+  3: 'Не больше 3 гостей',
+  100: 'Не для гостей',
+};
+const TYPES_LIST = {
+  bungalow: '0',
+  flat: '1000',
+  hotel: '3000',
+  house: '5000',
+  palace: '10000',
+};
+const SUBMIT_BUTTON_BLOCKED_TXT = 'Публикую...';
+const SUBMIT_BUTTON_TXT = 'Опубликовать';
+
+/**
  * Function that disable page's forms and inputs
  */
 const disableForms = () => {
@@ -40,24 +59,6 @@ const validateAdForm = () => {
   const timeOutInput = adForm.querySelector('#timeout');
   const submitButton = adForm.querySelector('.ad-form__submit');
   const resetButton = adForm.querySelector('.ad-form__reset');
-  /**
-   * Data variables
-   */
-  const ROOMS_GUESTS = {
-    1: 'Не больше 1 гостя',
-    2: 'Не больше 2 гостей',
-    3: 'Не больше 3 гостей',
-    100: 'Не для гостей',
-  };
-  const TYPES_LIST = {
-    bungalow: '0',
-    flat: '1000',
-    hotel: '3000',
-    house: '5000',
-    palace: '10000',
-  };
-  const SUBMIT_BUTTON_BLOCKED_TXT = 'Публикую...';
-  const SUBMIT_BUTTON_TXT = 'Опубликовать';
 
   /**
    * Prisitne library setup

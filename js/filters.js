@@ -2,15 +2,6 @@ import { clearRegularPins, createRegularPin, createRegularPins } from './map.js'
 import { debounce } from './util.js';
 
 /**
- * Variables for filter form
- */
-const filtersForm = document.querySelector('.map__filters');
-const housingTypeInput = filtersForm.querySelector('#housing-type');
-const housingRoomsInput = filtersForm.querySelector('#housing-rooms');
-const housingGuestsInput = filtersForm.querySelector('#housing-guests');
-const housingPriceInput = filtersForm.querySelector('#housing-price');
-const housingFeaturesInputs = filtersForm.querySelectorAll('.map__checkbox');
-/**
  * Filter data variable
  */
 const PRICE_VALUE = {
@@ -19,6 +10,16 @@ const PRICE_VALUE = {
   high: 50000,
 };
 const SIMILAR_ADS_COUNT = 10;
+
+/**
+ * Variables for filter form
+ */
+const filtersForm = document.querySelector('.map__filters');
+const housingTypeInput = filtersForm.querySelector('#housing-type');
+const housingRoomsInput = filtersForm.querySelector('#housing-rooms');
+const housingGuestsInput = filtersForm.querySelector('#housing-guests');
+const housingPriceInput = filtersForm.querySelector('#housing-price');
+const housingFeaturesInputs = filtersForm.querySelectorAll('.map__checkbox');
 
 /**
  * Function that enable filters

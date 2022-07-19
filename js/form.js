@@ -30,6 +30,7 @@ const validateAdForm = () => {
    * Form variables
    */
   const adForm = document.querySelector('.ad-form');
+  const filterForm = document.querySelector('.map__filters');
   const roomsInput = adForm.querySelector('#room_number');
   const guestsInput = adForm.querySelector('#capacity');
   const typesInput = adForm.querySelector('#type');
@@ -160,8 +161,9 @@ const validateAdForm = () => {
   /**
    * Function that reset the form to default values
    */
-  const resetForm = () => {
+  const resetForms = () => {
     adForm.reset();
+    filterForm.reset();
     priceSlider.noUiSlider.set(TYPES_LIST.flat);
     setMainPinDefault();
     removeAvatarPreviews();
@@ -204,7 +206,7 @@ const validateAdForm = () => {
         () => {
           addPopup('success');
           unblockSubmitButton();
-          resetForm();
+          resetForms();
         },
         () => {
           addPopup('error');
@@ -217,7 +219,7 @@ const validateAdForm = () => {
 
   resetButton.addEventListener('click', (evt) => {
     evt.preventDefault();
-    resetForm();
+    resetForms();
   });
 };
 

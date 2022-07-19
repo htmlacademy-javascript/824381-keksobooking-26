@@ -4,8 +4,8 @@ import { generateAd } from './ad-generator.js';
  * Variables for map
  */
 const MAIN_ADRESS = {
-  lat: 35.6895,
-  lng: 139.692,
+  lat: 35.65947,
+  lng: 139.74611,
 };
 const SIMILAR_ADS_COUNT = 10;
 /**
@@ -18,7 +18,7 @@ const adressInput = document.querySelector('#address');
  * @param {*} adress - adress data
  * @returns - string with lat. and lng. values
  */
-const fillInputValue = (adress) => `${Object.keys(adress)[0]}: ${adress.lat}, ${Object.keys(adress)[1]}:${adress.lng}`;
+const fillInputValue = (adress) => `${adress.lat}, ${adress.lng}`;
 adressInput.value = fillInputValue(MAIN_ADRESS);
 
 /**

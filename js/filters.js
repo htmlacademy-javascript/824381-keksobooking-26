@@ -1,4 +1,4 @@
-import { clearRegularPins, createRegularPin } from './map.js';
+import { clearRegularPins, createRegularPin, createRegularPins } from './map.js';
 import { debounce } from './util.js';
 
 /**
@@ -96,6 +96,11 @@ const enableFilters = (data) => {
         createRegularPin(point);
       });
     })();
+  });
+
+  filtersForm.addEventListener('reset', () => {
+    clearRegularPins();
+    createRegularPins(data);
   });
 };
 

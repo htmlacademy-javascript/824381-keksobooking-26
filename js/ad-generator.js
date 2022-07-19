@@ -1,4 +1,15 @@
 /**
+ * Ad data variable
+ */
+const TYPES_TRANSLATE = {
+  flat: 'Квартира',
+  bungalow: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец',
+  hotel: 'Отель',
+};
+
+/**
  * Variables for creating ad generator
  */
 const templateElement = document.querySelector('#card').content.querySelector('.popup');
@@ -15,16 +26,6 @@ const generateAd = (author, offer) => {
   const featuresListElements = cardElement.querySelectorAll('.popup__feature');
   const photoContainerElement = cardElement.querySelector('.popup__photos');
   const photoElement = photoContainerElement.querySelector('.popup__photo');
-  /**
-   * Ad data variable
-   */
-  const TYPES_TRANSLATE = {
-    flat: 'Квартира',
-    bungalow: 'Бунгало',
-    house: 'Дом',
-    palace: 'Дворец',
-    hotel: 'Отель',
-  };
 
   /**
    *  Helpper function that hide element

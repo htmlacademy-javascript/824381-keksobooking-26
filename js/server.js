@@ -1,8 +1,8 @@
 /**
  * Ads variables
  */
-const GET_ADS_ADRESS = 'https://26.javascript.pages.academy/keksobooking/data';
-const SET_FORM_ADRESS = 'https://26.javascript.pages.academy/keksobooking';
+const GET_ADS_ADDRESS = 'https://26.javascript.pages.academy/keksobooking/data';
+const SET_FORM_ADDRESS = 'https://26.javascript.pages.academy/keksobooking';
 const ERROR_MESSAGE = 'Не загружаются объявления';
 
 /**
@@ -11,7 +11,7 @@ const ERROR_MESSAGE = 'Не загружаются объявления';
  * @param {*} onFail - function on fail
  */
 const getData = (onSuccess, onFail) => {
-  fetch(GET_ADS_ADRESS)
+  fetch(GET_ADS_ADDRESS)
     .then((response) => (response.ok ? response.json() : onFail(ERROR_MESSAGE)))
     .catch(() => onFail(ERROR_MESSAGE))
     .then((data) => onSuccess(data));
@@ -24,7 +24,7 @@ const getData = (onSuccess, onFail) => {
  * @param {*} body - body of request
  */
 const sendData = (onSuccess, onFail, body) => {
-  fetch(SET_FORM_ADRESS, {
+  fetch(SET_FORM_ADDRESS, {
     method: 'POST',
     body,
   })

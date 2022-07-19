@@ -3,7 +3,7 @@ import { generateAd } from './ad-generator.js';
 /**
  * Variables for map
  */
-const MAIN_ADRESS = {
+const MAIN_ADDRESS = {
   lat: 35.65947,
   lng: 139.74611,
 };
@@ -11,25 +11,25 @@ const SIMILAR_ADS_COUNT = 10;
 /**
  * Variable for form input
  */
-const adressInput = document.querySelector('#address');
+const addressInput = document.querySelector('#address');
 
 /**
- * Function that fill adress input
- * @param {*} adress - adress data
+ * Function that fill address input
+ * @param {*} address - address data
  * @returns - string with lat. and lng. values
  */
-const fillInputValue = (adress) => `${adress.lat}, ${adress.lng}`;
-adressInput.value = fillInputValue(MAIN_ADRESS);
+const fillInputValue = (address) => `${address.lat}, ${address.lng}`;
+addressInput.value = fillInputValue(MAIN_ADDRESS);
 
 /**
  * Leaflet map setup
  */
 const map = L.map('map-canvas').setView(
   {
-    lat: MAIN_ADRESS.lat,
-    lng: MAIN_ADRESS.lng,
+    lat: MAIN_ADDRESS.lat,
+    lng: MAIN_ADDRESS.lng,
   },
-  13
+  12
 );
 L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
   maxZoom: 20,
@@ -48,8 +48,8 @@ const mainPinIcon = L.icon({
 
 const mainPinMarker = L.marker(
   {
-    lat: MAIN_ADRESS.lat,
-    lng: MAIN_ADRESS.lng,
+    lat: MAIN_ADDRESS.lat,
+    lng: MAIN_ADDRESS.lng,
   },
   {
     draggable: true,
@@ -58,10 +58,12 @@ const mainPinMarker = L.marker(
 );
 
 mainPinMarker.on('moveend', (evt) => {
-  const updatedMainAdress = evt.target.getLatLng();
+  const updatedMainAddress = evt.target.getLatLng();
 
-  Object.keys(updatedMainAdress).forEach((key) => (updatedMainAdress[key] = Number(updatedMainAdress[key].toFixed(5))));
-  adressInput.value = fillInputValue(updatedMainAdress);
+  Object.keys(updatedMainAddress).forEach(
+    (key) => (updatedMainAddress[key] = Number(updatedMainAddress[key].toFixed(5)))
+  );
+  addressInput.value = fillInputValue(updatedMainAddress);
 });
 
 mainPinMarker.addTo(map);
@@ -128,8 +130,8 @@ const closeMapPopup = () => {
  * Function that set main pin to default values
  */
 const setMainPinDefault = () => {
-  mainPinMarker.setLatLng([MAIN_ADRESS.lat, MAIN_ADRESS.lng]);
-  adressInput.value = fillInputValue(MAIN_ADRESS);
+  mainPinMarker.setLatLng([MAIN_ADDRESS.lat, MAIN_ADDRESS.lng]);
+  addressInput.value = fillInputValue(MAIN_ADDRESS);
 };
 
 export { setMainPinDefault, closeMapPopup, createRegularPin, createRegularPins, clearRegularPins };

@@ -14,12 +14,12 @@ const SIMILAR_ADS_COUNT = 10;
 /**
  * Variables for filter form
  */
-const filtersForm = document.querySelector('.map__filters');
-const housingTypeInput = filtersForm.querySelector('#housing-type');
-const housingRoomsInput = filtersForm.querySelector('#housing-rooms');
-const housingGuestsInput = filtersForm.querySelector('#housing-guests');
-const housingPriceInput = filtersForm.querySelector('#housing-price');
-const housingFeaturesInputs = filtersForm.querySelectorAll('.map__checkbox');
+const filtersFormElement = document.querySelector('.map__filters');
+const housingTypeElement = filtersFormElement.querySelector('#housing-type');
+const housingRoomsElement = filtersFormElement.querySelector('#housing-rooms');
+const housingGuestsElement = filtersFormElement.querySelector('#housing-guests');
+const housingPriceElement = filtersFormElement.querySelector('#housing-price');
+const housingFeaturesElements = filtersFormElement.querySelectorAll('.map__checkbox');
 
 /**
  * Function that enable filters
@@ -62,13 +62,13 @@ const enableFilters = (data) => {
   /**
    * Form filter event listener
    */
-  filtersForm.addEventListener('change', () => {
+  filtersFormElement.addEventListener('change', () => {
     clearRegularPins();
     /**
      * An empty array to fill with features for check
      */
     const featuresValues = [];
-    housingFeaturesInputs.forEach((item) => {
+    housingFeaturesElements.forEach((item) => {
       if (item.checked) {
         featuresValues.push(item.value);
       }
@@ -83,10 +83,10 @@ const enableFilters = (data) => {
         break;
       }
       if (
-        filterByValue(ad.offer.type, housingTypeInput.value) &&
-        filterByValue(String(ad.offer.rooms), housingRoomsInput.value) &&
-        filterByValue(String(ad.offer.guests), housingGuestsInput.value) &&
-        filterByPrice(String(ad.offer.price), housingPriceInput.value) &&
+        filterByValue(ad.offer.type, housingTypeElement.value) &&
+        filterByValue(String(ad.offer.rooms), housingRoomsElement.value) &&
+        filterByValue(String(ad.offer.guests), housingGuestsElement.value) &&
+        filterByPrice(String(ad.offer.price), housingPriceElement.value) &&
         filterByFeatures(ad.offer.features, featuresValues)
       ) {
         filteredAds.push(ad);
@@ -99,7 +99,7 @@ const enableFilters = (data) => {
     })();
   });
 
-  filtersForm.addEventListener('reset', () => {
+  filtersFormElement.addEventListener('reset', () => {
     clearRegularPins();
     createRegularPins(data);
   });

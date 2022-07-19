@@ -1,7 +1,7 @@
 /**
  * Variables for creating ad generator
  */
-const template = document.querySelector('#card').content.querySelector('.popup');
+const templateElement = document.querySelector('#card').content.querySelector('.popup');
 const cardsListFragment = document.createDocumentFragment();
 
 /**
@@ -11,10 +11,10 @@ const generateAd = (author, offer) => {
   /**
    * Variables for creating ad
    */
-  const card = template.cloneNode(true);
-  const featuresListItems = card.querySelectorAll('.popup__feature');
-  const photoContainer = card.querySelector('.popup__photos');
-  const photoImg = photoContainer.querySelector('.popup__photo');
+  const cardElement = templateElement.cloneNode(true);
+  const featuresListElements = cardElement.querySelectorAll('.popup__feature');
+  const photoContainerElement = cardElement.querySelector('.popup__photos');
+  const photoElement = photoContainerElement.querySelector('.popup__photo');
   /**
    * Ad data variable
    */
@@ -31,7 +31,7 @@ const generateAd = (author, offer) => {
    * @param {*} elem - element we want to hide
    */
   const hideElem = (elem) => {
-    card.querySelector(elem).classList.add('hidden');
+    cardElement.querySelector(elem).classList.add('hidden');
   };
 
   /**
@@ -40,7 +40,8 @@ const generateAd = (author, offer) => {
    * @param {*} content - text content for item
    * @returns - card item with text
    */
-  const fillTextElem = (elem, content) => (content ? (card.querySelector(elem).textContent = content) : hideElem(elem));
+  const fillTextElem = (elem, content) =>
+    content ? (cardElement.querySelector(elem).textContent = content) : hideElem(elem);
 
   /**
    * Helper function that fill attribute in card item
@@ -50,7 +51,7 @@ const generateAd = (author, offer) => {
    * @returns - card item with attribute
    */
   const fillAttributeElem = (elem, attribute, content) =>
-    content ? card.querySelector(elem).setAttribute(attribute, content) : hideElem(elem);
+    content ? cardElement.querySelector(elem).setAttribute(attribute, content) : hideElem(elem);
 
   fillTextElem('.popup__title', offer.title);
   fillTextElem('.popup__text--address', offer.address);
@@ -62,7 +63,7 @@ const generateAd = (author, offer) => {
   fillAttributeElem('.popup__avatar', 'src', author.avatar);
 
   if (offer.features) {
-    featuresListItems.forEach((item) => {
+    featuresListElements.forEach((item) => {
       if (!offer.features.some((feature) => item.classList.contains(`popup__feature--${feature}`))) {
         item.remove();
       }
@@ -76,21 +77,21 @@ const generateAd = (author, offer) => {
      */
     if (offer.photos.length > 1) {
       for (let i = 1; i < offer.photos.length; i++) {
-        const photoElem = photoImg.cloneNode(true);
-        photoElem.setAttribute('src', offer.photos[i]);
-        photoContainer.append(photoElem);
+        const photoNewElement = photoElement.cloneNode(true);
+        photoNewElement.setAttribute('src', offer.photos[i]);
+        photoContainerElement.append(photoNewElement);
       }
     }
   } else {
-    photoContainer.remove();
+    photoContainerElement.remove();
   }
 
   /**
    * Append generating card in fragment element
    */
-  cardsListFragment.append(card);
+  cardsListFragment.append(cardElement);
 
-  return card;
+  return cardElement;
 };
 
 export { generateAd };

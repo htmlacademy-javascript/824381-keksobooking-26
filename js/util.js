@@ -1,5 +1,5 @@
 /**
- * Helpers variable
+ * Helpers variables
  */
 const ERROR_SHOW_TIME = 5000;
 const TIMEOUT_DELAY = 500;
@@ -46,12 +46,12 @@ const removeItemsAttribute = (elements, attributeName) =>
  * @param {*} message - text message to fill
  */
 const showError = (message) => {
-  const errorContainer = document.createElement('div');
-  errorContainer.classList.add('error-baloon');
-  errorContainer.textContent = message;
-  document.body.append(errorContainer);
+  const errorContainerElement = document.createElement('div');
+  errorContainerElement.classList.add('error-baloon');
+  errorContainerElement.textContent = message;
+  document.body.append(errorContainerElement);
   setTimeout(() => {
-    errorContainer.remove();
+    errorContainerElement.remove();
   }, ERROR_SHOW_TIME);
 };
 
@@ -63,12 +63,12 @@ const addPopup = (name) => {
   /**
    * Variables for creating popup
    */
-  const body = document.querySelector('body');
-  const popupClone = body.querySelector(`#${name}`).content.querySelector(`.${name}`).cloneNode(true);
+  const bodyElement = document.querySelector('body');
+  const popupCloneElement = bodyElement.querySelector(`#${name}`).content.querySelector(`.${name}`).cloneNode(true);
   const popupFragment = document.createDocumentFragment();
 
-  popupFragment.append(popupClone);
-  body.append(popupFragment);
+  popupFragment.append(popupCloneElement);
+  bodyElement.append(popupFragment);
 
   /**
    * Function that remove popup and event listeners
@@ -76,18 +76,18 @@ const addPopup = (name) => {
    */
   const removePopup = (e) => {
     if (e.button === 0 || e.key === 'Escape') {
-      const popup = document.querySelector(`.${name}`);
-      popup.remove();
-      body.removeEventListener('click', removePopup);
-      body.removeEventListener('keydown', removePopup);
+      const popupElement = document.querySelector(`.${name}`);
+      popupElement.remove();
+      bodyElement.removeEventListener('click', removePopup);
+      bodyElement.removeEventListener('keydown', removePopup);
     }
   };
 
   /**
    * Event listeners
    */
-  body.addEventListener('click', removePopup);
-  body.addEventListener('keydown', removePopup);
+  bodyElement.addEventListener('click', removePopup);
+  bodyElement.addEventListener('keydown', removePopup);
 };
 
 /**

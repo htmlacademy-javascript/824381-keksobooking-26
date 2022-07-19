@@ -4,6 +4,25 @@ import { sendData } from './server.js';
 import { removeAvatarPreviews, enableAvatarPreviews } from './avatar.js';
 
 /**
+ * Form data variables
+ */
+const ROOMS_GUESTS = {
+  1: 'Не больше 1 гостя',
+  2: 'Не больше 2 гостей',
+  3: 'Не больше 3 гостей',
+  100: 'Не для гостей',
+};
+const TYPES_LIST = {
+  bungalow: '0',
+  flat: '1000',
+  hotel: '3000',
+  house: '5000',
+  palace: '10000',
+};
+const SUBMIT_BUTTON_BLOCKED_TXT = 'Публикую...';
+const SUBMIT_BUTTON_TXT = 'Опубликовать';
+
+/**
  * Function that disable page's forms and inputs
  */
 const disableForms = () => {
@@ -29,39 +48,22 @@ const validateAdForm = () => {
   /**
    * Form variables
    */
-  const adForm = document.querySelector('.ad-form');
-  const roomsInput = adForm.querySelector('#room_number');
-  const guestsInput = adForm.querySelector('#capacity');
-  const typesInput = adForm.querySelector('#type');
-  const priceInput = adForm.querySelector('#price');
-  const priceSlider = adForm.querySelector('.ad-form__slider');
-  const timeInInput = adForm.querySelector('#timein');
-  const timeOutInput = adForm.querySelector('#timeout');
-  const submitButton = adForm.querySelector('.ad-form__submit');
-  const resetButton = adForm.querySelector('.ad-form__reset');
-  /**
-   * Data variables
-   */
-  const ROOMS_GUESTS = {
-    1: 'Не больше 1 гостя',
-    2: 'Не больше 2 гостей',
-    3: 'Не больше 3 гостей',
-    100: 'Не для гостей',
-  };
-  const TYPES_LIST = {
-    bungalow: '0',
-    flat: '1000',
-    hotel: '3000',
-    house: '5000',
-    palace: '10000',
-  };
-  const SUBMIT_BUTTON_BLOCKED_TXT = 'Публикую...';
-  const SUBMIT_BUTTON_TXT = 'Опубликовать';
+  const adFormElement = document.querySelector('.ad-form');
+  const filterFormElement = document.querySelector('.map__filters');
+  const roomsElement = adFormElement.querySelector('#room_number');
+  const guestsElement = adFormElement.querySelector('#capacity');
+  const typesElement = adFormElement.querySelector('#type');
+  const priceElement = adFormElement.querySelector('#price');
+  const priceSliderElement = adFormElement.querySelector('.ad-form__slider');
+  const timeInElement = adFormElement.querySelector('#timein');
+  const timeOutElement = adFormElement.querySelector('#timeout');
+  const submitElement = adFormElement.querySelector('.ad-form__submit');
+  const resetElement = adFormElement.querySelector('.ad-form__reset');
 
   /**
    * Prisitne library setup
    */
-  const pristine = new Pristine(adForm, {
+  const pristine = new Pristine(adFormElement, {
     classTo: 'ad-form__element',
     errorTextParent: 'ad-form__element',
     errorTextClass: 'ad-form__error',
@@ -73,7 +75,7 @@ const validateAdForm = () => {
    * @returns true or false
    */
   const validateGuests = (value) => {
-    let roomValue = roomsInput.value;
+    let roomValue = roomsElement.value;
     if (roomValue === Object.keys(ROOMS_GUESTS)[3]) {
       roomValue = roomValue.substr(2);
     }
@@ -85,19 +87,19 @@ const validateAdForm = () => {
    * @returns error message
    */
   const getGuestsErrorMessage = () => {
-    const roomValue = roomsInput.value;
+    const roomValue = roomsElement.value;
     return ROOMS_GUESTS[roomValue];
   };
 
   /**
    * Add validator for Prestine
    */
-  pristine.addValidator(guestsInput, validateGuests, getGuestsErrorMessage);
+  pristine.addValidator(guestsElement, validateGuests, getGuestsErrorMessage);
 
   /**
-   * Function that bind guestsInput and roomsInput for correct validation
+   * Function that bind guests input and rooms input for correct validation
    */
-  const onRoomsChange = () => pristine.validate(guestsInput);
+  const validateInputs = () => pristine.validate(guestsElement);
 
   /**
    * Function that change sibling input value from data
@@ -117,14 +119,14 @@ const validateAdForm = () => {
    * @param {*} select - select input with similar value
    */
   const setSimilarOption = (e, select) => {
-    const similarOption = select.querySelector(`option[value="${e.target.value}"]`);
-    similarOption.selected = true;
+    const similarOptionElement = select.querySelector(`option[value="${e.target.value}"]`);
+    similarOptionElement.selected = true;
   };
 
   /**
    * Nouislider setup
    */
-  noUiSlider.create(priceSlider, {
+  noUiSlider.create(priceSliderElement, {
     range: {
       min: 0,
       max: 100000,
@@ -137,32 +139,33 @@ const validateAdForm = () => {
       from: (value) => parseFloat(value),
     },
   });
-  priceSlider.noUiSlider.on('update', () => {
-    priceInput.value = priceSlider.noUiSlider.get();
+  priceSliderElement.noUiSlider.on('update', () => {
+    priceElement.value = priceSliderElement.noUiSlider.get();
   });
 
   /**
    * Function that block submit button
    */
   const blockSubmitButton = () => {
-    submitButton.disabled = true;
-    submitButton.textContent = SUBMIT_BUTTON_BLOCKED_TXT;
+    submitElement.disabled = true;
+    submitElement.textContent = SUBMIT_BUTTON_BLOCKED_TXT;
   };
 
   /**
    * Function that unblock submit button
    */
   const unblockSubmitButton = () => {
-    submitButton.disabled = false;
-    submitButton.textContent = SUBMIT_BUTTON_TXT;
+    submitElement.disabled = false;
+    submitElement.textContent = SUBMIT_BUTTON_TXT;
   };
 
   /**
    * Function that reset the form to default values
    */
-  const resetForm = () => {
-    adForm.reset();
-    priceSlider.noUiSlider.set(TYPES_LIST.flat);
+  const resetForms = () => {
+    adFormElement.reset();
+    filterFormElement.reset();
+    priceSliderElement.noUiSlider.set(TYPES_LIST.flat);
     setMainPinDefault();
     removeAvatarPreviews();
     closeMapPopup();
@@ -176,26 +179,26 @@ const validateAdForm = () => {
   /**
    * Adform event listeners
    */
-  roomsInput.addEventListener('change', onRoomsChange);
+  roomsElement.addEventListener('change', validateInputs);
 
-  typesInput.addEventListener('change', (evt) => {
-    changeSiblingInputValue(evt, TYPES_LIST, priceInput);
-    priceSlider.noUiSlider.set(TYPES_LIST[evt.target.value]);
+  typesElement.addEventListener('change', (evt) => {
+    changeSiblingInputValue(evt, TYPES_LIST, priceElement);
+    priceSliderElement.noUiSlider.set(TYPES_LIST[evt.target.value]);
   });
 
-  timeInInput.addEventListener('change', (evt) => {
-    setSimilarOption(evt, timeOutInput);
+  timeInElement.addEventListener('change', (evt) => {
+    setSimilarOption(evt, timeOutElement);
   });
 
-  timeOutInput.addEventListener('change', (evt) => {
-    setSimilarOption(evt, timeInInput);
+  timeOutElement.addEventListener('change', (evt) => {
+    setSimilarOption(evt, timeInElement);
   });
 
-  priceInput.addEventListener('change', function () {
-    priceSlider.noUiSlider.set(this.value);
+  priceElement.addEventListener('change', function () {
+    priceSliderElement.noUiSlider.set(this.value);
   });
 
-  adForm.addEventListener('submit', (evt) => {
+  adFormElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const valid = pristine.validate();
     if (valid) {
@@ -204,7 +207,7 @@ const validateAdForm = () => {
         () => {
           addPopup('success');
           unblockSubmitButton();
-          resetForm();
+          resetForms();
         },
         () => {
           addPopup('error');
@@ -215,9 +218,9 @@ const validateAdForm = () => {
     }
   });
 
-  resetButton.addEventListener('click', (evt) => {
+  resetElement.addEventListener('click', (evt) => {
     evt.preventDefault();
-    resetForm();
+    resetForms();
   });
 };
 

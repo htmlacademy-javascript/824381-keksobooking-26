@@ -1,18 +1,19 @@
 /**
+ * Avatar data variable
+ */
+const FILES_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
+/**
  * Function that enable avatar photo previews
  */
 const enableAvatarPreviews = () => {
   /**
    * Avatar variables
    */
-  const photoAvatarChoser = document.querySelector('.ad-form-header__input');
-  const photoAvatarPreview = document.querySelector('.ad-form-header__preview');
-  const photoHousingChoser = document.querySelector('.ad-form__input');
-  const photoHousingPreview = document.querySelector('.ad-form__photo');
-  /**
-   * Data variables
-   */
-  const IMAGE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  const avatarChoserElement = document.querySelector('.ad-form-header__input');
+  const avatarPreviewElement = document.querySelector('.ad-form-header__preview');
+  const housePhotoChoserElement = document.querySelector('.ad-form__input');
+  const housePhotoPreviewElement = document.querySelector('.ad-form__photo');
 
   /**
    * Function that set photo to preview element
@@ -23,28 +24,28 @@ const enableAvatarPreviews = () => {
     const file = choser.files[0];
     const fileName = file.name.toLowerCase();
 
-    const matches = IMAGE_TYPES.some((format) => fileName.endsWith(format));
+    const matches = FILES_TYPES.some((format) => fileName.endsWith(format));
     if (matches) {
-      const image = document.createElement('div');
+      const imageElement = document.createElement('div');
       if (preview.querySelector('img')) {
-        image.classList.add('preview-container', 'preview-container_small');
+        imageElement.classList.add('preview-container', 'preview-container_small');
       } else {
-        image.classList.add('preview-container');
+        imageElement.classList.add('preview-container');
       }
-      image.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
-      preview.append(image);
+      imageElement.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
+      preview.append(imageElement);
     }
   };
 
   /**
    * Avatar event listeners
    */
-  photoAvatarChoser.addEventListener('change', (e) => {
-    setPhotoPreview(e.target, photoAvatarPreview);
+  avatarChoserElement.addEventListener('change', (e) => {
+    setPhotoPreview(e.target, avatarPreviewElement);
   });
 
-  photoHousingChoser.addEventListener('change', (e) => {
-    setPhotoPreview(e.target, photoHousingPreview);
+  housePhotoChoserElement.addEventListener('change', (e) => {
+    setPhotoPreview(e.target, housePhotoPreviewElement);
   });
 };
 
@@ -52,9 +53,9 @@ const enableAvatarPreviews = () => {
  * Function that remove avatar images
  */
 const removeAvatarPreviews = () => {
-  const photoPreviews = document.querySelectorAll('.preview-container ');
-  if (photoPreviews) {
-    photoPreviews.forEach((item) => item.remove());
+  const photoPreviewElements = document.querySelectorAll('.preview-container ');
+  if (photoPreviewElements) {
+    photoPreviewElements.forEach((item) => item.remove());
   }
 };
 
